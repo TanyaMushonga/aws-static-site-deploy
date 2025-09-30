@@ -29,12 +29,12 @@ graph TB
     C -->|deploy| D[S3 Bucket]
     D -->|origin| E[CloudFront CDN]
     E -->|serve| F[🌍 Global Users]
-    
+
     G[Terraform Repository] -->|provisions| D
     G -->|provisions| E
     G -->|provisions| H[Route 53]
     G -->|provisions| I[SSL Certificate]
-    
+
     style A fill:#e1f5fe
     style F fill:#e8f5e8
     style G fill:#f3e5f5
@@ -58,6 +58,7 @@ The AWS infrastructure for this project is fully automated using **Terraform**:
 🔗 **[terraform-s3_and_cloudfront](https://github.com/TanyaMushonga/terraform-s3_and_cloudfront)**
 
 This companion repository provisions:
+
 - 🪣 **S3 Bucket** with static website hosting configuration
 - 🌐 **CloudFront Distribution** with global edge locations
 - 🔒 **SSL/TLS Certificate** via AWS Certificate Manager
@@ -82,6 +83,7 @@ aws-static-site-deploy/
 ## 🎯 **What You'll Learn**
 
 ### 📚 **Complete AWS Deployment Guide**
+
 - Step-by-step S3 bucket configuration
 - CloudFront distribution setup
 - Custom domain and SSL configuration
@@ -89,12 +91,14 @@ aws-static-site-deploy/
 - Security best practices
 
 ### 🔧 **DevOps Best Practices**
+
 - Infrastructure as Code with Terraform
 - CI/CD pipeline with GitHub Actions
 - Automated testing and deployment
 - Monitoring and error handling
 
 ### 💡 **Professional Web Development**
+
 - Responsive HTML5 design
 - Modern CSS styling techniques
 - Progressive enhancement
@@ -147,6 +151,7 @@ git push origin main
 ```
 
 The GitHub Actions workflow will automatically:
+
 - ✅ Deploy HTML files to S3
 - ✅ Invalidate CloudFront cache
 - ✅ Ensure zero-downtime deployment
@@ -155,40 +160,44 @@ The GitHub Actions workflow will automatically:
 
 ## 🛠️ **Technology Stack**
 
-| Component | Technology | Purpose |
-|-----------|------------|---------|
-| **Frontend** | HTML5, CSS3, JavaScript | Static website content |
-| **Hosting** | AWS S3 | Scalable static website hosting |
-| **CDN** | AWS CloudFront | Global content delivery |
-| **DNS** | AWS Route 53 | Domain management |
-| **SSL** | AWS Certificate Manager | HTTPS encryption |
-| **Infrastructure** | Terraform | Infrastructure as Code |
-| **CI/CD** | GitHub Actions | Automated deployment |
-| **Version Control** | Git/GitHub | Source code management |
+| Component           | Technology              | Purpose                         |
+| ------------------- | ----------------------- | ------------------------------- |
+| **Frontend**        | HTML5, CSS3, JavaScript | Static website content          |
+| **Hosting**         | AWS S3                  | Scalable static website hosting |
+| **CDN**             | AWS CloudFront          | Global content delivery         |
+| **DNS**             | AWS Route 53            | Domain management               |
+| **SSL**             | AWS Certificate Manager | HTTPS encryption                |
+| **Infrastructure**  | Terraform               | Infrastructure as Code          |
+| **CI/CD**           | GitHub Actions          | Automated deployment            |
+| **Version Control** | Git/GitHub              | Source code management          |
 
 ---
 
 ## 📊 **Features Showcase**
 
 ### 🎨 **Professional Design**
+
 - Modern, responsive layout
 - AWS branding and color scheme
 - Mobile-first design approach
 - Accessibility compliant
 
 ### 🔧 **Advanced Functionality**
+
 - Interactive troubleshooting guides
 - Copy-paste AWS CLI commands
 - Real-time deployment status
 - Comprehensive error handling
 
 ### 🚀 **Performance Optimized**
+
 - Optimized images and assets
 - Minified CSS and JavaScript
 - CloudFront caching strategies
 - Fast global content delivery
 
 ### 🔒 **Security Focused**
+
 - HTTPS enforcement
 - Security headers implementation
 - Access control policies
@@ -236,15 +245,18 @@ We welcome contributions! Here's how you can help:
 ## 📚 **Related Resources**
 
 ### 🏗️ **Infrastructure Repository**
+
 - **[terraform-s3_and_cloudfront](https://github.com/TanyaMushonga/terraform-s3_and_cloudfront)** - Complete Terraform infrastructure code
 
 ### 📖 **Documentation & Guides**
+
 - [AWS S3 Static Website Hosting](https://docs.aws.amazon.com/s3/latest/userguide/WebsiteHosting.html)
 - [AWS CloudFront Developer Guide](https://docs.aws.amazon.com/cloudfront/latest/DeveloperGuide/)
 - [Terraform AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
 - [GitHub Actions Documentation](https://docs.github.com/en/actions)
 
 ### 🛠️ **Tools & Services**
+
 - [AWS CLI](https://aws.amazon.com/cli/)
 - [Terraform](https://www.terraform.io/)
 - [GitHub Actions](https://github.com/features/actions)
@@ -260,6 +272,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👥 **Author**
 
 **Tanya Mushonga**
+
 - 🐙 GitHub: [@TanyaMushonga](https://github.com/TanyaMushonga)
 - 💼 LinkedIn: [Connect with me](https://linkedin.com/in/tanyamushonga)
 - 🌐 Portfolio: [tanyamushonga.dev](https://tanyamushonga.dev)
@@ -282,6 +295,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 [![Stars](https://img.shields.io/github/stars/TanyaMushonga/aws-static-site-deploy?style=social)](https://github.com/TanyaMushonga/aws-static-site-deploy/stargazers)
 [![Forks](https://img.shields.io/github/forks/TanyaMushonga/aws-static-site-deploy?style=social)](https://github.com/TanyaMushonga/aws-static-site-deploy/network/members)
 
-*Built with ❤️ for the developer community*
+_Built with ❤️ for the developer community_
 
 </div>
