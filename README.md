@@ -32,7 +32,7 @@ graph TB
 
     G[Terraform Repository] -->|provisions| D
     G -->|provisions| E
-    G -->|provisions| H[Route 53]
+    G -->|provisions| H[Namecheap DNS]
     G -->|provisions| I[SSL Certificate]
 
     style A fill:#e1f5fe
@@ -165,7 +165,7 @@ The GitHub Actions workflow will automatically:
 | **Frontend**        | HTML5, CSS3, JavaScript | Static website content          |
 | **Hosting**         | AWS S3                  | Scalable static website hosting |
 | **CDN**             | AWS CloudFront          | Global content delivery         |
-| **DNS**             | AWS Route 53            | Domain management               |
+| **DNS**             | Namecheap               | Domain management               |
 | **SSL**             | AWS Certificate Manager | HTTPS encryption                |
 | **Infrastructure**  | Terraform               | Infrastructure as Code          |
 | **CI/CD**           | GitHub Actions          | Automated deployment            |
