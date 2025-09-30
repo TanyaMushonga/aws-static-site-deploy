@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Error - AWS Static Site Deployment</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .error-container {
+        background: white;
+        border-radius: 20px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+        padding: 3rem;
+        max-width: 800px;
+        width: 90%;
+        text-align: center;
+        position: relative;
+        overflow: hidden;
+      }
+
+      .error-container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 5px;
+        background: linear-gradient(90deg, #ff6b6b, #ee5a24, #ff9ff3, #54a0ff);
+      }
+
+      .error-icon {
+        font-size: 6rem;
+        color: #ee5a24;
+        margin-bottom: 1rem;
+        animation: bounce 2s infinite;
+      }
+
+      @keyframes bounce {
+        0%,
+        20%,
+        50%,
+        80%,
+        100% {
+          transform: translateY(0);
+        }
+        40% {
+          transform: translateY(-10px);
+        }
+        60% {
+          transform: translateY(-5px);
+        }
+      }
+
+      h1 {
+        color: #2c3e50;
+        font-size: 3rem;
+        margin-bottom: 1rem;
+        font-weight: 300;
+      }
+
+      .error-code {
+        font-size: 1.2rem;
+        color: #7f8c8d;
+        margin-bottom: 2rem;
+      }
+
+      .error-message {
+        font-size: 1.1rem;
+        color: #34495e;
+        margin-bottom: 2rem;
+        line-height: 1.8;
+      }
+
+      .troubleshooting {
+        background: #f8f9fa;
+        border-radius: 10px;
+        padding: 2rem;
+        margin: 2rem 0;
+        text-align: left;
+      }
+
+      .troubleshooting h2 {
+        color: #2c3e50;
+        margin-bottom: 1rem;
+        text-align: center;
+      }
+
+      .issue-section {
+        margin-bottom: 2rem;
+        padding: 1.5rem;
+        background: white;
+        border-radius: 10px;
+        border-left: 4px solid #ee5a24;
+      }
+
+      .issue-title {
+        color: #ee5a24;
+        font-weight: bold;
+        font-size: 1.1rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .solution-list {
+        margin-left: 1rem;
+      }
+
+      .solution-list li {
+        margin-bottom: 0.5rem;
+        color: #555;
+      }
+
+      .code-snippet {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 5px;
+        font-family: "Courier New", monospace;
+        font-size: 0.9rem;
+        margin: 0.5rem 0;
+        overflow-x: auto;
+      }
+
+      .warning-box {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+      }
+
+      .info-box {
+        background: #d1ecf1;
+        border: 1px solid #bee5eb;
+        color: #0c5460;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+      }
+
+      .action-buttons {
+        margin-top: 2rem;
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        text-decoration: none;
+        font-weight: bold;
+        transition: all 0.3s ease;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .btn-secondary {
+        background: #f8f9fa;
+        color: #495057;
+        border: 2px solid #dee2e6;
+      }
+
+      .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      }
+
+      .contact-info {
+        background: #f8f9fa;
+        padding: 1.5rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+      }
+
+      .deployment-status {
+        background: #e3f2fd;
+        border-left: 4px solid #2196f3;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 0 5px 5px 0;
+      }
+
+      @media (max-width: 768px) {
+        .error-container {
+          padding: 2rem;
+          margin: 1rem;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .error-icon {
+          font-size: 4rem;
+        }
+
+        .action-buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="error-container">
+      <div class="error-icon">🚨</div>
+      <h1>Oops! Something Went Wrong</h1>
+      <div class="error-code">Error 404 - Page Not Found</div>
+      <div class="error-message">
+        The page you're looking for might have been moved, deleted, or you may
+        have entered an incorrect URL. Don't worry - this comprehensive
+        troubleshooting guide will help you resolve common AWS static site
+        deployment issues.
+      </div>
+
+      <div class="deployment-status">
+        <strong>🔍 AWS Static Site Deployment Status:</strong>
+        If you're seeing this page, your error page configuration is working
+        correctly! This means your S3 bucket and CloudFront distribution are
+        properly set up to handle missing pages.
+      </div>
+
+      <div class="troubleshooting">
+        <h2>🛠️ Common Deployment Issues & Solutions</h2>
+
+        <div class="issue-section">
+          <div class="issue-title">1. S3 Bucket Configuration Issues</div>
+          <ul class="solution-list">
+            <li>
+              <strong>Bucket Policy Not Set:</strong> Ensure your bucket has
+              public read access
+            </li>
+            <li>
+              <strong>Static Website Hosting Disabled:</strong> Check that
+              static website hosting is enabled
+            </li>
+            <li>
+              <strong>Index Document Missing:</strong> Verify index.html exists
+              in the root of your bucket
+            </li>
+          </ul>
+          <div class="code-snippet">
+            # Check bucket policy aws s3api get-bucket-policy --bucket
+            your-bucket-name # Verify static website hosting aws s3api
+            get-bucket-website --bucket your-bucket-name
+          </div>
+        </div>
+
+        <div class="issue-section">
+          <div class="issue-title">2. CloudFront Distribution Problems</div>
+          <ul class="solution-list">
+            <li>
+              <strong>Distribution Not Deployed:</strong> Wait for deployment to
+              complete (can take 15-20 minutes)
+            </li>
+            <li>
+              <strong>Origin Configuration Error:</strong> Verify origin points
+              to correct S3 bucket
+            </li>
+            <li>
+              <strong>Cache Invalidation Needed:</strong> Clear CloudFront cache
+              after updates
+            </li>
+          </ul>
+          <div class="code-snippet">
+            # Check distribution status aws cloudfront get-distribution --id
+            YOUR_DISTRIBUTION_ID # Create cache invalidation aws cloudfront
+            create-invalidation \ --distribution-id YOUR_DISTRIBUTION_ID \
+            --paths "/*"
+          </div>
+        </div>
+
+        <div class="issue-section">
+          <div class="issue-title">3. DNS and Domain Issues</div>
+          <ul class="solution-list">
+            <li>
+              <strong>CNAME Not Propagated:</strong> DNS changes can take up to
+              48 hours to propagate
+            </li>
+            <li>
+              <strong>SSL Certificate Issues:</strong> Ensure certificate is
+              validated and active
+            </li>
+            <li>
+              <strong>Wrong DNS Records:</strong> Verify CNAME points to
+              CloudFront distribution domain
+            </li>
+          </ul>
+          <div class="code-snippet">
+            # Check DNS propagation nslookup your-domain.com # Verify SSL
+            certificate status aws acm list-certificates --region us-east-1
+          </div>
+        </div>
+
+        <div class="issue-section">
+          <div class="issue-title">4. File Upload and Sync Issues</div>
+          <ul class="solution-list">
+            <li>
+              <strong>Files Not Uploaded:</strong> Check if all files were
+              successfully uploaded to S3
+            </li>
+            <li>
+              <strong>Incorrect Content-Type:</strong> Ensure proper MIME types
+              are set
+            </li>
+            <li>
+              <strong>File Permissions:</strong> Verify files have proper read
+              permissions
+            </li>
+          </ul>
+          <div class="code-snippet">
+            # List all files in bucket aws s3 ls s3://your-bucket-name
+            --recursive # Sync files with proper content types aws s3 sync
+            ./website-folder s3://your-bucket-name \ --exclude "*" \ --include
+            "*.html" \ --content-type "text/html"
+          </div>
+        </div>
+
+        <div class="issue-section">
+          <div class="issue-title">5. Access and Permission Errors</div>
+          <ul class="solution-list">
+            <li>
+              <strong>403 Forbidden:</strong> Check bucket policy allows public
+              read access
+            </li>
+            <li>
+              <strong>Access Denied:</strong> Verify IAM permissions for AWS CLI
+              operations
+            </li>
+            <li>
+              <strong>CORS Issues:</strong> Configure CORS if serving resources
+              cross-origin
+            </li>
+          </ul>
+          <div class="warning-box">
+            <strong>⚠️ Security Note:</strong> Only grant necessary permissions.
+            Avoid using overly broad policies that could expose sensitive data.
+          </div>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <strong>💡 Pro Tip:</strong> Always test your deployment in stages:
+        <ol style="margin-top: 0.5rem; margin-left: 1rem">
+          <li>Test S3 static website hosting directly</li>
+          <li>Verify CloudFront distribution serves content</li>
+          <li>Test custom domain (if configured)</li>
+          <li>Validate SSL certificate functionality</li>
+        </ol>
+      </div>
+
+      <div class="troubleshooting">
+        <h2>🔍 Diagnostic Commands</h2>
+        <div class="code-snippet">
+          # Check AWS CLI configuration aws configure list # Verify S3 bucket
+          exists and is accessible aws s3 ls s3://your-bucket-name # Test
+          website endpoint curl -I
+          http://your-bucket-name.s3-website-region.amazonaws.com # Check
+          CloudFront distribution status aws cloudfront list-distributions
+          --query
+          'DistributionList.Items[?Origins.Items[0].DomainName==`your-bucket-name.s3.amazonaws.com`]'
+          # Monitor CloudFront metrics aws cloudwatch get-metric-statistics \
+          --namespace AWS/CloudFront \ --metric-name Requests \ --dimensions
+          Name=DistributionId,Value=YOUR_DISTRIBUTION_ID \ --start-time
+          2025-09-30T00:00:00Z \ --end-time 2025-09-30T23:59:59Z \ --period 3600
+          \ --statistics Sum
+        </div>
+      </div>
+
+      <div class="contact-info">
+        <h3>📞 Need More Help?</h3>
+        <p>
+          If you're still experiencing issues, here are additional resources:
+        </p>
+        <ul style="text-align: left; margin-top: 1rem">
+          <li>
+            <strong>AWS Support:</strong> Create a support case in AWS Console
+          </li>
+          <li>
+            <strong>AWS Documentation:</strong> Check the official S3 and
+            CloudFront documentation
+          </li>
+          <li>
+            <strong>CloudWatch Logs:</strong> Review CloudFront access logs for
+            detailed error information
+          </li>
+          <li>
+            <strong>AWS Forums:</strong> Search or post in AWS developer forums
+          </li>
+        </ul>
+      </div>
+
+      <div class="action-buttons">
+        <a href="/" class="btn btn-primary">🏠 Go to Homepage</a>
+        <a href="javascript:history.back()" class="btn btn-secondary"
+          >⬅️ Go Back</a
+        >
+        <a href="javascript:location.reload()" class="btn btn-secondary"
+          >🔄 Retry</a
+        >
+      </div>
+
+      <div
+        style="
+          margin-top: 2rem;
+          padding-top: 2rem;
+          border-top: 1px solid #dee2e6;
+          color: #6c757d;
+          font-size: 0.9rem;
+        "
+      >
+        <p>
+          AWS Static Site Deployment Error Page | Last updated: September 30,
+          2025
+        </p>
+        <p>This error page is served from S3 via CloudFront</p>
+      </div>
+    </div>
+
+    <script>
+      // Add some interactivity
+      document.addEventListener("DOMContentLoaded", function () {
+        // Add click tracking for diagnostic purposes
+        document.querySelectorAll(".btn").forEach((button) => {
+          button.addEventListener("click", function (e) {
+            console.log("Button clicked:", e.target.textContent);
+          });
+        });
+
+        // Display current URL for debugging
+        const currentUrl = window.location.href;
+        console.log("Current URL:", currentUrl);
+
+        // Auto-refresh suggestion after 30 seconds
+        setTimeout(() => {
+          const refreshSuggestion = document.createElement("div");
+          refreshSuggestion.className = "info-box";
+          refreshSuggestion.innerHTML =
+            "<strong>💡 Suggestion:</strong> If you just deployed, try refreshing the page as DNS propagation might still be in progress.";
+          document
+            .querySelector(".error-container")
+            .appendChild(refreshSuggestion);
+        }, 30000);
+      });
+    </script>
+  </body>
+</html>

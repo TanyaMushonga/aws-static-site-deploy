@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AWS Static Site Deployment Guide</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        background-color: #f5f5f5;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        background: linear-gradient(135deg, #232f3e, #37475a);
+        color: white;
+        padding: 2rem 0;
+        text-align: center;
+        margin-bottom: 2rem;
+        border-radius: 10px;
+      }
+
+      h1 {
+        font-size: 2.5rem;
+        margin-bottom: 0.5rem;
+      }
+
+      .subtitle {
+        font-size: 1.2rem;
+        opacity: 0.9;
+      }
+
+      .section {
+        background: white;
+        margin-bottom: 2rem;
+        padding: 2rem;
+        border-radius: 10px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      h2 {
+        color: #232f3e;
+        margin-bottom: 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 2px solid #ff9900;
+      }
+
+      h3 {
+        color: #37475a;
+        margin: 1.5rem 0 1rem 0;
+      }
+
+      .step {
+        background: #f8f9fa;
+        border-left: 4px solid #ff9900;
+        padding: 1rem;
+        margin: 1rem 0;
+        border-radius: 0 5px 5px 0;
+      }
+
+      .step-number {
+        background: #ff9900;
+        color: white;
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 1rem;
+      }
+
+      code {
+        background: #f4f4f4;
+        padding: 0.2rem 0.5rem;
+        border-radius: 3px;
+        font-family: "Courier New", monospace;
+      }
+
+      .code-block {
+        background: #2d3748;
+        color: #e2e8f0;
+        padding: 1rem;
+        border-radius: 5px;
+        overflow-x: auto;
+        margin: 1rem 0;
+        font-family: "Courier New", monospace;
+      }
+
+      .warning {
+        background: #fff3cd;
+        border: 1px solid #ffeaa7;
+        color: #856404;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+      }
+
+      .success {
+        background: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+        padding: 1rem;
+        border-radius: 5px;
+        margin: 1rem 0;
+      }
+
+      .architecture {
+        text-align: center;
+        background: #f8f9fa;
+        padding: 2rem;
+        border-radius: 10px;
+        margin: 2rem 0;
+      }
+
+      .flow-diagram {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin: 2rem 0;
+      }
+
+      .flow-box {
+        background: white;
+        border: 2px solid #ff9900;
+        padding: 1rem;
+        border-radius: 10px;
+        min-width: 120px;
+        text-align: center;
+        font-weight: bold;
+      }
+
+      .arrow {
+        font-size: 2rem;
+        color: #ff9900;
+      }
+
+      ul,
+      ol {
+        margin-left: 2rem;
+        margin-bottom: 1rem;
+      }
+
+      li {
+        margin-bottom: 0.5rem;
+      }
+
+      footer {
+        background: #232f3e;
+        color: white;
+        text-align: center;
+        padding: 2rem;
+        border-radius: 10px;
+        margin-top: 2rem;
+      }
+
+      @media (max-width: 768px) {
+        .container {
+          padding: 10px;
+        }
+
+        h1 {
+          font-size: 2rem;
+        }
+
+        .flow-diagram {
+          flex-direction: column;
+        }
+
+        .arrow {
+          transform: rotate(90deg);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>🚀 AWS Static Site Deployment</h1>
+        <p class="subtitle">
+          Complete Guide to Deploy Static Websites using S3 and CloudFront
+        </p>
+      </header>
+
+      <div class="section">
+        <h2>📋 Overview</h2>
+        <p>
+          This guide walks you through deploying a static website on Amazon Web
+          Services (AWS) using S3 for hosting and CloudFront as a Content
+          Delivery Network (CDN). This setup provides global content
+          distribution, improved performance, and SSL/TLS encryption.
+        </p>
+
+        <div class="architecture">
+          <h3>Architecture Overview</h3>
+          <div class="flow-diagram">
+            <div class="flow-box">User</div>
+            <div class="arrow">→</div>
+            <div class="flow-box">CloudFront CDN</div>
+            <div class="arrow">→</div>
+            <div class="flow-box">S3 Bucket</div>
+          </div>
+          <p>
+            <em
+              >CloudFront serves content from edge locations closest to users
+              for optimal performance</em
+            >
+          </p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🛠️ Prerequisites</h2>
+        <ul>
+          <li>AWS Account with appropriate permissions</li>
+          <li>AWS CLI installed and configured</li>
+          <li>Static website files (HTML, CSS, JS, images)</li>
+          <li>Domain name (optional, for custom domain)</li>
+          <li>Basic understanding of AWS services</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>📚 Step-by-Step Deployment Process</h2>
+
+        <div class="step">
+          <h3>
+            <span class="step-number">1</span>Create and Configure S3 Bucket
+          </h3>
+          <p>First, create an S3 bucket to store your static website files:</p>
+          <div class="code-block">
+            # Create S3 bucket (bucket names must be globally unique) aws s3 mb
+            s3://your-unique-bucket-name # Enable static website hosting aws s3
+            website s3://your-unique-bucket-name \ --index-document index.html \
+            --error-document error.html
+          </div>
+          <div class="warning">
+            <strong>⚠️ Important:</strong> Bucket names must be globally unique
+            across all AWS accounts. Choose a descriptive, unique name.
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>
+            <span class="step-number">2</span>Configure Bucket Policy for Public
+            Access
+          </h3>
+          <p>Set up bucket policy to allow public read access:</p>
+          <div class="code-block">
+            { "Version": "2012-10-17", "Statement": [ { "Sid":
+            "PublicReadGetObject", "Effect": "Allow", "Principal": "*",
+            "Action": "s3:GetObject", "Resource":
+            "arn:aws:s3:::your-unique-bucket-name/*" } ] }
+          </div>
+          <p>Apply the policy:</p>
+          <div class="code-block">
+            aws s3api put-bucket-policy \ --bucket your-unique-bucket-name \
+            --policy file://bucket-policy.json
+          </div>
+        </div>
+
+        <div class="step">
+          <h3><span class="step-number">3</span>Upload Website Files</h3>
+          <p>Upload your static website files to the S3 bucket:</p>
+          <div class="code-block">
+            # Upload all files recursively aws s3 sync ./your-website-folder/
+            s3://your-unique-bucket-name/ # Set proper content types for better
+            performance aws s3 cp s3://your-unique-bucket-name/
+            s3://your-unique-bucket-name/ \ --recursive \ --metadata-directive
+            REPLACE \ --content-type "text/html" \ --exclude "*" \ --include
+            "*.html"
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>
+            <span class="step-number">4</span>Create CloudFront Distribution
+          </h3>
+          <p>Set up CloudFront distribution for global content delivery:</p>
+          <div class="code-block">
+            # Create distribution configuration file cat >
+            cloudfront-config.json << EOF { "CallerReference": "$(date +%s)",
+            "Comment": "Static website distribution", "DefaultCacheBehavior": {
+            "TargetOriginId": "S3-your-unique-bucket-name",
+            "ViewerProtocolPolicy": "redirect-to-https", "MinTTL": 0,
+            "ForwardedValues": { "QueryString": false, "Cookies": {"Forward":
+            "none"} } }, "Origins": { "Quantity": 1, "Items": [ { "Id":
+            "S3-your-unique-bucket-name", "DomainName":
+            "your-unique-bucket-name.s3.amazonaws.com", "S3OriginConfig": {
+            "OriginAccessIdentity": "" } } ] }, "Enabled": true,
+            "DefaultRootObject": "index.html" } EOF # Create the distribution
+            aws cloudfront create-distribution --distribution-config
+            file://cloudfront-config.json
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>
+            <span class="step-number">5</span>Configure Custom Error Pages
+          </h3>
+          <p>Set up custom error pages for better user experience:</p>
+          <div class="code-block">
+            # Update distribution to include custom error pages aws cloudfront
+            update-distribution \ --id YOUR_DISTRIBUTION_ID \
+            --distribution-config '{ "CustomErrorResponses": { "Quantity": 2,
+            "Items": [ { "ErrorCode": 404, "ResponsePagePath": "/error.html",
+            "ResponseCode": "404", "ErrorCachingMinTTL": 300 }, { "ErrorCode":
+            403, "ResponsePagePath": "/error.html", "ResponseCode": "404",
+            "ErrorCachingMinTTL": 300 } ] } }'
+          </div>
+        </div>
+
+        <div class="step">
+          <h3>
+            <span class="step-number">6</span>Set Up Custom Domain (Optional)
+          </h3>
+          <p>Configure a custom domain for your website:</p>
+          <ol>
+            <li>Request SSL certificate in AWS Certificate Manager (ACM)</li>
+            <li>
+              Add alternate domain names (CNAMEs) to CloudFront distribution
+            </li>
+            <li>Update DNS records to point to CloudFront distribution</li>
+          </ol>
+          <div class="code-block">
+            # Request SSL certificate aws acm request-certificate \
+            --domain-name yourdomain.com \ --domain-name www.yourdomain.com \
+            --validation-method DNS
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>🔧 Configuration Best Practices</h2>
+        <ul>
+          <li>
+            <strong>Caching Strategy:</strong> Set appropriate cache headers for
+            different file types
+          </li>
+          <li>
+            <strong>Compression:</strong> Enable GZIP compression in CloudFront
+          </li>
+          <li>
+            <strong>Security Headers:</strong> Add security headers for better
+            protection
+          </li>
+          <li>
+            <strong>Monitoring:</strong> Set up CloudWatch alarms for monitoring
+          </li>
+          <li>
+            <strong>Versioning:</strong> Enable S3 versioning for backup
+            purposes
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>🎯 Performance Optimization</h2>
+        <div class="step">
+          <h3>Cache Headers Configuration</h3>
+          <div class="code-block">
+            # Set cache headers for different file types aws s3 cp
+            s3://your-bucket/ s3://your-bucket/ \ --recursive \
+            --metadata-directive REPLACE \ --cache-control "max-age=31536000" \
+            --exclude "*" \ --include "*.css" \ --include "*.js" \ --include
+            "*.png" \ --include "*.jpg" aws s3 cp s3://your-bucket/
+            s3://your-bucket/ \ --recursive \ --metadata-directive REPLACE \
+            --cache-control "max-age=3600" \ --exclude "*" \ --include "*.html"
+          </div>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>💡 Troubleshooting Common Issues</h2>
+        <ul>
+          <li>
+            <strong>403 Forbidden:</strong> Check bucket policy and public
+            access settings
+          </li>
+          <li>
+            <strong>404 Not Found:</strong> Verify index document configuration
+            and file paths
+          </li>
+          <li>
+            <strong>Slow Loading:</strong> Check CloudFront cache settings and
+            origin configuration
+          </li>
+          <li>
+            <strong>SSL Issues:</strong> Ensure certificate is validated and
+            properly configured
+          </li>
+          <li>
+            <strong>DNS Problems:</strong> Verify CNAME records point to correct
+            CloudFront domain
+          </li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>📊 Monitoring and Maintenance</h2>
+        <div class="step">
+          <h3>Set Up CloudWatch Monitoring</h3>
+          <div class="code-block">
+            # Create CloudWatch alarm for 4xx errors aws cloudwatch
+            put-metric-alarm \ --alarm-name "CloudFront-4xx-Errors" \
+            --alarm-description "Monitor 4xx errors" \ --metric-name
+            4xxErrorRate \ --namespace AWS/CloudFront \ --statistic Average \
+            --period 300 \ --threshold 5 \ --comparison-operator
+            GreaterThanThreshold
+          </div>
+        </div>
+      </div>
+
+      <div class="success">
+        <h3>🎉 Deployment Complete!</h3>
+        <p>
+          Your static website is now deployed and accessible via CloudFront. The
+          distribution domain will be available in the AWS Console, and your
+          site will be globally distributed for optimal performance.
+        </p>
+      </div>
+
+      <div class="section">
+        <h2>🔗 Useful Resources</h2>
+        <ul>
+          <li>
+            <a
+              href="https://docs.aws.amazon.com/s3/latest/userguide/WebsiteHosting.html"
+              >AWS S3 Static Website Hosting Documentation</a
+            >
+          </li>
+          <li>
+            <a
+              href="https://docs.aws.amazon.com/cloudfront/latest/DeveloperGuide/"
+              >AWS CloudFront Developer Guide</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.aws.amazon.com/cli/latest/reference/s3/"
+              >AWS CLI S3 Commands Reference</a
+            >
+          </li>
+          <li>
+            <a href="https://docs.aws.amazon.com/acm/latest/userguide/"
+              >AWS Certificate Manager User Guide</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      <footer>
+        <p>
+          &copy; 2025 AWS Static Site Deployment Guide | Built with ❤️ for the
+          developer community
+        </p>
+        <p>Last updated: September 30, 2025</p>
+      </footer>
+    </div>
+  </body>
+</html>
